@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -137,8 +138,26 @@ public class CrosswordMagicViewModel extends ViewModel {
             // Word object to the "wordMap" hash map; for the key names, use the box number
             // followed by the direction (for example, "16D" for Box # 16, Down).
 
-            puzzleHeight.setValue(15); // DELETE THIS!
-            puzzleWidth.setValue(15); // DELETE THIS!
+            line = br.readLine();
+            fields = line.trim().split("\t");
+            puzzleHeight.setValue(Integer.parseInt(fields[0]));
+            puzzleWidth.setValue(Integer.parseInt(fields[1]));
+
+            while ((line = br.readLine()) != null) {
+
+                fields = line.trim().split("\t");
+                Word word = new Word(fields);
+
+                if (word.getDirection().equals("A")) {
+                    aString.append(String.valueOf(word.getBox()) + ": " + word.getClue() + "\n");
+                }
+
+                else if (word.getDirection().equals("D")) {
+                    dString.append(String.valueOf(word.getBox()) + ": " + word.getClue() + "\n");
+                }
+
+                wordMap.put(String.valueOf(word.getBox()) + word.getDirection(), word);
+            }
 
         } catch (Exception e) {}
 
@@ -162,6 +181,9 @@ public class CrosswordMagicViewModel extends ViewModel {
             Word w = e.getValue();
 
             // INSERT YOUR CODE HERE
+            // get the word, row, amd column number for each field. The iterate through the number of characters in each word and populate the number of squares accordingly.
+            // then, depending on if you're populating based on across or down, increment the row or column accordingly
+
 
         }
 
