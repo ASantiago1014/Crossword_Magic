@@ -180,15 +180,43 @@ public class CrosswordMagicViewModel extends ViewModel {
 
             Word w = e.getValue();
 
-            // INSERT YOUR CODE HERE
-            // get the word, row, amd column number for each field. The iterate through the number of characters in each word and populate the number of squares accordingly.
+            // get the word, row, amd column number for each field. Then iterate through the number of characters in each word and populate the number of squares accordingly.
             // then, depending on if you're populating based on across or down, increment the row or column accordingly
 
+            String word = w.getWord();
+            int row = w.getRow();
+            int col = w.getColumn();
+
+            aNumbers[row][col] = w.getBox();
+
+            for (int i = 0; i <  word.length(); ++i) {
+
+                aLetters[row][col] = ' ';
+
+                if (w.getDirection().equals(Word.ACROSS))
+                    col++;
+
+                else if (w.getDirection().equals(Word.DOWN))
+                    row++;
+            }
 
         }
 
         this.letters.setValue(aLetters);
         this.numbers.setValue(aNumbers);
+
+    }
+
+    public Word getWord(String key) {
+
+        // method which retrieves and returns a specific Word from the collection
+        HashMap<String, Word> wordMap = getWords();
+
+        Word word = new Word(wordMap.get(key));
+    }
+
+    public void addWordToGrid(String key) {
+
 
     }
 
