@@ -210,12 +210,29 @@ public class CrosswordMagicViewModel extends ViewModel {
     public Word getWord(String key) {
 
         // method which retrieves and returns a specific Word from the collection
-        HashMap<String, Word> wordMap = getWords();
-
-        Word word = new Word(wordMap.get(key));
+        return (words.getValue().get(key));
     }
 
     public void addWordToGrid(String key) {
+
+        Word w = words.getValue().get(key);
+        Character[][] aLetters = new Character[puzzleHeight.getValue()][puzzleWidth.getValue()];
+
+        String word = w.getWord();
+        int row = w.getRow();
+        int col = w.getColumn();
+        String direction = w.getDirection();
+
+        for (char c : word.toCharArray()) {
+
+            aLetters[row][col] = c;
+
+            if (direction.equals(Word.ACROSS))
+                col++;
+
+            else if (direction.equals(Word.DOWN))
+                row++;
+        }
 
 
     }

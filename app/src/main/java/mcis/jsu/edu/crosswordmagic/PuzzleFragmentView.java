@@ -1,15 +1,19 @@
 package mcis.jsu.edu.crosswordmagic;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.GridLayout;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,8 @@ public class PuzzleFragmentView extends Fragment implements View.OnClickListener
 
     View root;
     private CrosswordMagicViewModel model;
+
+    private String userInput;
 
     public PuzzleFragmentView() {}
 
@@ -222,6 +228,40 @@ public class PuzzleFragmentView extends Fragment implements View.OnClickListener
 
             Toast toast=Toast.makeText(getContext(), "You have just tapped Square " + numbers[row][col], Toast.LENGTH_SHORT);
             toast.show();
+
+            // Alert Dialog Box creation
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.input_title);
+            builder.setMessage(R.string.input_text);
+            final EditText input = new EditText(getActivity());
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int i) {
+                    userInput = input.getText().toString().toUpperCase();
+                }
+            });
+            builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface d, int i) {
+                    userInput = "";
+                    d.cancel();
+                }
+            });
+            AlertDialog aboutDialog = builder.show();
+
+            // Compare words at box and direction to see if user's guess is correct.
+
+            String key = "key";
+
+            Word w = model.getWord(key);
+
+            if (w.equals(userInput)) {
+
+                model.addWordToGrid(key);
+            }
 
             /* Add an "X" to Clicked Square */
 
