@@ -254,7 +254,10 @@ public class PuzzleFragmentView extends Fragment implements View.OnClickListener
 
             // Compare words at box and direction to see if user's guess is correct.
 
-            String key = "key";
+
+
+            String diagonalKey = String.valueOf(numbers[row][col] + "A");
+            String horizontalKey = String.valueOf(numbers[row][col] + "D");
 
             Word w = model.getWord(key);
 
